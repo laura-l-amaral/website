@@ -56,11 +56,16 @@ dataset_fields:
       pt: "Cobertura temporal"
       en: "Temporal coverage"
     # validators: generate_temporal_coverage
-  - field_name: observation_level
+  - field_name: entity
     label:
-      pt: "Nível da observação"
-      en: "Observation level"
-    # validators: generate_observation_level
+      pt: "Entidade"
+      en: "Entity"
+    # validators: generate_entity
+  - field_name: time_unit
+    label:
+      pt: "Unidade temporal"
+      en: "Time unit"
+    # validators: generate_time_unit
   - field_name: auxiliary_files_url
     label:
       pt: "Url dos arquivos auxiliares"
