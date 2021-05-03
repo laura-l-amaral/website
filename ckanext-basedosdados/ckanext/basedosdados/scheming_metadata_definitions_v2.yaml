@@ -297,10 +297,16 @@ resource_fields:
         label:
           pt: "Recorrente"
           en: "Recurring"
-      - value: empty # TODO: dahis review
+      - value: uncertain # TODO: dahis review
+        label:
+          pt: "Incerta"
+          en: "Uncertain"
       - value: other # TODO: dahis review
+        label:
+          pt: "Outra"
+          en: "Other"
     required: true
-
+  
   # bdm_table
 
   - field_name: table_id
@@ -329,13 +335,13 @@ resource_fields:
       pt: "exemplo: Descrição e anotações úteis sobre o tratamento da tabela."
       en: "example: a useful description of the table's data treatment."
     validators: only_on_types(bdm_table) #required_on_types(bdm_table) MANUAL
-  - field_name: observation_level
+  - field_name: entity
     label:
-      pt: "Nível da observação"
-      en: "Observation level"
+      pt: "Entidade"
+      en: "Entity"
     helper_text:
-      pt: "O que representa cada linha da tabela."
-      en: "What each row in the table represents."
+      pt: "Qual entidade está sendo representada em uma linha (independente da unidade temporal)."
+      en: "What entity is represented in a row (regardless of the time unit)."
     preset: multiple_select
     select_size: 10
     choices:
@@ -800,6 +806,80 @@ resource_fields:
           pt: "Outro"
           en: "Other"
     validators: only_on_types(bdm_table) scheming_multiple_choice
+  - field_name: time_unit
+    label:
+      pt: "Unidade temporal"
+      en: "Time unit"
+    helper_text:
+      pt: "Qual unidade temporal tem cada linha na tabela."
+      en: "What time unit each row represents in the data."
+    preset: select
+    choices:
+      - value: second
+        label:
+          pt: "Segundo"
+          en: "Second"
+      - value: minute
+        label:
+          pt: "Minuto"
+          en: "Minute"
+      - value: hour
+        label:
+          pt: "Hora"
+          en: "Hour"
+      - value: day
+        label:
+          pt: "Dia"
+          en: "Day"
+      - value: week
+        label:
+          pt: "Semana"
+          en: "Week"
+      - value: month
+        label:
+          pt: "Mês"
+          en: "Month"
+      - value: quarter
+        label:
+          pt: "Trimestre"
+          en: "Quarter"
+      - value: semester
+        label:
+          pt: "Semestre"
+          en: "Semester"
+      - value: one_year
+        label:
+          pt: "1 ano"
+          en: "1 year"
+      - value: two_years
+        label:
+          pt: "2 anos"
+          en: "2 years"
+      - value: three_years
+        label:
+          pt: "3 anos"
+          en: "3 years"
+      - value: four_year
+        label:
+          pt: "4 anos"
+          en: "4 years"
+      - value: five_years
+        label:
+          pt: "5 anos"
+          en: "5 years"
+      - value: ten_years
+        label:
+          pt: "10 anos"
+          en: "10 years"
+      - value: none # TODO: dahis review
+        label:
+          pt: "Nenhuma"
+          en: "None"
+      - value: other # TODO: dahis review
+        label:
+          pt: "Outra"
+          en: "Other"
+    required: only_on_types(bdm_table) required_on_types(bdm_table)
   - field_name: columns
     label:
       pt: "Colunas da tabela"
