@@ -807,7 +807,7 @@ resource_fields:
     helper_text:
       pt: "Metadados das colunas da tabela, como nome da coluna e descrição"
       en: "Table columns metadata, such as column name and description"
-    validators: list_of_dicts bdm_table_columns_metadata_validator #only_on_types(bdm_table) required_on_types(bdm_table)
+    validators: list_of_dicts only_on_types(bdm_table) required_on_types(bdm_table) bdm_table_columns_metadata_validator
   - field_name: primary_keys
     label:
       pt: "Chaves primárias"

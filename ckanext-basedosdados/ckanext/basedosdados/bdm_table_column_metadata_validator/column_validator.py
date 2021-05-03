@@ -37,19 +37,6 @@ class ColumnMetadataValidator(Validator):
         if std_col and value != std_col["description"]:
             self._error(field, "Standard column does not have standard description")
 
-
-def validate_columns_from_yaml(path_to_yaml):
-    schema = yaml.load(open("validation_schema.yaml", "r"), Loader=yaml.SafeLoader)
-    config = yaml.load(open(Path(path_to_yaml), "r"), Loader=yaml.SafeLoader)
-    columns = config["columns"]
-    v = ColumnMetadataValidator(schema=schema)
-
-    if not v.validate({"columns": columns}):
-        # print(columns)
-        print(v.errors["columns"])
-    return v.validate({"columns": columns})
-
-
 SCHEMA = yaml.safe_load("""
 columns:
   type: list
@@ -75,38 +62,4 @@ VALIDATOR = ColumnMetadataValidator(schema=SCHEMA)
 
 def validate_columns_from_dict(column_dict):
     validate = VALIDATOR.validate(column_dict)
-    # print(validate.errors["columns"])  # TODO: nao basta imprimir, temos q retornar os erros para obedecer a interface do ckan
     return VALIDATOR.errors
-
-
-def validate_name(field):
-    schema = yaml.safe_load("""
-    name:
-        type: string
-        required: true
-        empty: false
-        check_with: [lowercase, nospaces, abbreviation]
-    """)
-    validator = ColumnMetadataValidator(schema)
-    valid = validator.validate(field)
-    return validator.errors
-
-
-def validate_description(field):
-    schema = yaml.safe_load("""
-    description:
-        type: string
-        required: true
-        empty: false
-        check_with: standard_columns
-    """)
-    validator = ColumnMetadataValidator(schema)
-
-    if not validator.validate(field):
-        return validator.errors
-
-    return "Ok"
-
-
-if __name__ == "__main__":
-    validate_columns_from_yaml(path_to_yaml=sys.argv[1])
