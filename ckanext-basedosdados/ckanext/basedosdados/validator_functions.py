@@ -1,7 +1,9 @@
 # Documentation on: https://docs.ckan.org/en/2.9/extensions/adding-custom-fields.html?highlight=validators#custom-validators
 
 from ckantoolkit import missing as MISSING
-
+import ckan.lib.navl.dictization_functions as df
+from ckanext.scheming.validation import scheming_validator
+import json
 
 def _get_type(key, data):
     k = list(key)
@@ -42,6 +44,34 @@ def only_on_types(*types):
     return validator
 
 
+@scheming_validator
+def list_of_dicts(field, schema):
+    def validator(key, data, errors, context):
+        # if there was an error before calling our validator
+        # don't bother with our validation
+        if errors[key]:
+            return
+
+        data_dict = df.unflatten(data[('__junk',)])
+        value = data_dict[key[0]]
+        if value is not MISSING:
+            if isinstance(value, str):
+                value = [value]
+            elif not isinstance(value, list):
+                errors[key].append(_('expecting list of strings, got "%s"') % str(value) )
+                return
+        else:
+            value = []
+
+        if not errors[key]:
+            data[key] = json.dumps(value)
+
+        # remove from junk
+        del data_dict[key[0]]
+        data[('__junk',)] = df.flatten_dict(data_dict)
+
+    return validator
+
 def bdm_table_columns_metadata_validator(key, data, errors, con):
     from ckanext.basedosdados.bdm_table_column_metadata_validator import (
         column_validator,
@@ -56,7 +86,6 @@ def bdm_table_columns_metadata_validator(key, data, errors, con):
     print(
         "########################## V A L I D A T I N G C O L U M N S ##################################"
     )
-
     validated = column_validator.validate_columns_from_dict({"columns": data[key]})
     if validated:
         errors[key].append(str(validated))

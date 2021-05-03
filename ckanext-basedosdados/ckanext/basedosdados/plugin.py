@@ -14,7 +14,6 @@ class BasedosdadosPlugin(
     plugins.implements(plugins.interfaces.ITemplateHelpers)
     plugins.implements(plugins.IValidators)
     plugins.implements(plugins.IActions)
-    plugins.implements(plugins.IPackageController, inherit=True)
     # plugins.implements(plugins.IDatasetForm)
 
     # IFacets
@@ -70,15 +69,6 @@ class BasedosdadosPlugin(
 
         return _read_functions_from_module(endpoints)
 
-    # IPackageController
-    # def before_index(self, data_dict):
-    #     name = []
-    #     description = []
-    #     for col in data_dict.get("columns", []):
-    #         name.append(col["name"])
-    #         description.append(col["description"])
-    #     data_dict["name"] = "\n".join(name)
-    #     data_dict["description"] = "\n".join(description)
 
 
 def _read_functions_from_module(module):
