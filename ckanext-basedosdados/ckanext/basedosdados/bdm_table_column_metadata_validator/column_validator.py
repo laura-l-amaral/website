@@ -33,7 +33,9 @@ class ColumnMetadataValidator(Validator):
                 self._error(field, f"cannot contain abbreviations {not_allowed_abbrev}")
 
     def _check_with_standard_columns(self, field, value):
-        std_col = BD_STD_COLUMNS_BY_NAME.get(self.document["name"])
+        print(self.document)
+        print(self.root_document)
+        std_col = BD_STD_COLUMNS_BY_NAME.get(self.root_document["name"])
         if std_col and value != std_col["description"]:
             self._error(field, "Standard column does not have standard description")
 

@@ -42,41 +42,48 @@ def only_on_types(*types):
     return validator
 
 
-def bdm_table_columns_metadata_validator(data):
+def bdm_table_columns_metadata_validator(key, data, errors, con):
     from ckanext.basedosdados.bdm_table_column_metadata_validator import (
         column_validator,
     )
+
+    print("KEY: ", key, "\n")
+    print("DATA: ", data, "\n")
+    print("TYPE: ", type(data), "\n")
+    for key, value in data.items():
+        print(key, value)
 
     print(
         "########################## V A L I D A T I N G C O L U M N S ##################################"
     )
 
-    def validator(key, data, errors, con):
-        validated = column_validator.validate_columns_from_dict(data)
-        if validated:
-            errors[key].append(str(validated))
+    validated = column_validator.validate_columns_from_dict({"columns": data[key]})
+    if validated:
+        errors[key].append(str(validated))
 
-    return validator
+    return data
 
 
-def bdm_table_columns_name_validator(*field):
+def bdm_table_columns_name_validator(key, data, errors, con):
     from ckanext.basedosdados.bdm_table_column_metadata_validator import (
         column_validator,
     )
 
+    # print("KEY: ", key)
+    print("DATA: ", data)
+    print("TYPE: ", type(data))
     print(
         "########################## V A L I D A T I N G N A M E S ##################################"
     )
 
-    def validator(key, data, errors, con):
-        validated = column_validator.validate_name(field)
-        if validated:
-            errors[key].append(str(validated))
+    validated = column_validator.validate_name({"name": data[key]})
+    if validated:
+        errors[key].append(str(validated))
 
-    return validator
+    return data
 
 
-def bdm_table_columns_description_validator(*field):
+def bdm_table_columns_description_validator(key, data, errors, con):
     from ckanext.basedosdados.bdm_table_column_metadata_validator import (
         column_validator,
     )
@@ -85,9 +92,8 @@ def bdm_table_columns_description_validator(*field):
         "########################## V A L I D A T I N G D E S C R I P T I O N ##################################"
     )
 
-    def validator(key, data, errors, con):
-        validated = column_validator.validate_description(data)
-        if not validated:
-            errors[key].append(validated)
+    validated = column_validator.validate_description({"description": data[key]})
+    if not validated:
+        errors[key].append(validated)
 
-    return validator
+    return data
