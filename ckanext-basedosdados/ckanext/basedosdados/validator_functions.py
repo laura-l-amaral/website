@@ -46,26 +46,17 @@ def only_on_types(*types):
 
 @scheming_validator
 def list_of_dicts(field, schema):
+    """Remove field contents from the ('__junk') key and make it into a field inside the resource"""
     def validator(key, data, errors, context):
         # if there was an error before calling our validator
         # don't bother with our validation
         if errors[key]:
             return
-
+        # Unflatten the field contents, e.g. take it back to the original yaml structure
         data_dict = df.unflatten(data[('__junk',)])
-        value = data_dict[key[0]]
-        if value is not MISSING:
-            if isinstance(value, str):
-                value = [value]
-            elif not isinstance(value, list):
-                errors[key].append(_('expecting list of strings, got "%s"') % str(value) )
-                return
-        else:
-            value = []
-
         if not errors[key]:
-            data[key] = json.dumps(value)
-
+            #Put field contents into the right key
+            data[key] = data_dict[key[0]]
         # remove from junk
         del data_dict[key[0]]
         data[('__junk',)] = df.flatten_dict(data_dict)
@@ -76,53 +67,13 @@ def bdm_table_columns_metadata_validator(key, data, errors, con):
     from ckanext.basedosdados.bdm_table_column_metadata_validator import (
         column_validator,
     )
-
-    print("KEY: ", key, "\n")
-    print("DATA: ", data, "\n")
-    print("TYPE: ", type(data), "\n")
-    for key, value in data.items():
-        print(key, value)
-
     print(
         "########################## V A L I D A T I N G C O L U M N S ##################################"
     )
-    validated = column_validator.validate_columns_from_dict({"columns": data[key]})
-    if validated:
-        errors[key].append(str(validated))
-
-    return data
-
-
-def bdm_table_columns_name_validator(key, data, errors, con):
-    from ckanext.basedosdados.bdm_table_column_metadata_validator import (
-        column_validator,
-    )
-
-    # print("KEY: ", key)
-    print("DATA: ", data)
-    print("TYPE: ", type(data))
-    print(
-        "########################## V A L I D A T I N G N A M E S ##################################"
-    )
-
-    validated = column_validator.validate_name({"name": data[key]})
-    if validated:
-        errors[key].append(str(validated))
-
-    return data
-
-
-def bdm_table_columns_description_validator(key, data, errors, con):
-    from ckanext.basedosdados.bdm_table_column_metadata_validator import (
-        column_validator,
-    )
-
-    print(
-        "########################## V A L I D A T I N G D E S C R I P T I O N ##################################"
-    )
-
-    validated = column_validator.validate_description({"description": data[key]})
-    if not validated:
-        errors[key].append(validated)
+    # At this point the variable data[key][0] should be a dict for the cerberus validation to work
+    # The call order of validators in the field schema matter!
+    validation_errors = column_validator.validate_columns_from_dict(data[key][0])
+    if validation_errors:
+        errors[key].append(str(validation_errors))
 
     return data
