@@ -46,6 +46,22 @@ services:
     ports:
       - "8800:8800"
 
+  strapi:
+    image: strapi/strapi
+    volumes:
+      - ./next/strapi:/srv/app
+    environment:
+      DATABASE_CLIENT: postgres
+      DATABASE_NAME: strapi
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: ${POSTGRES_PASSWORD}
+      DATABASE_PASSWORD: ckan
+    ports:
+      - "1337:1337"
+    depends_on:
+      - db
+
   db:
     container_name: db
     image: bdd/db
@@ -71,3 +87,5 @@ services:
     ports:
       - "3000:3000"
     image: bdd/next${VTAG}
+    depends_on:
+      - strapi
