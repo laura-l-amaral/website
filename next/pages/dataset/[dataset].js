@@ -18,6 +18,7 @@ import {
   listDatasets,
   showDataset,
   updateResource,
+  getOneClickDownloadSize
 } from "../api/datasets";
 import SectionText from "../../components/atoms/SectionText";
 import Title from "../../components/atoms/Title";
@@ -49,11 +50,21 @@ import GreenTab from "../../components/atoms/GreenTab";
 export async function getStaticProps(context) {
   const dataset = await showDataset(context.params.dataset);
   const translations = await getTranslations();
+<<<<<<< HEAD
   const availableOptionsTranslations = await getAvailableOptionsTranslations();
   const resources = dataset?.resources || [];
   const bdmTables = resources.filter(
     (r) => r && r?.resource_type === "bdm_table"
   );
+||||||| constructed merge base
+  const resources = dataset["resources"];
+  const bdmTables = resources.filter((r) => r.resource_type === "bdm_table");
+=======
+  const resources = dataset["resources"];
+  let bdmTables = resources.filter((r) => r.resource_type === "bdm_table");
+  for (let resource of bdmTables) { resource.oneClickDownloadSize = getOneClickDownloadSize(resource); }
+  for (let resource of bdmTables) { resource.oneClickDownloadSize = await resource.oneClickDownloadSize; } // TODO: debug why this sometimes isn't showing, even when the file is there
+>>>>>>> filter one click download when size is too big
   const externalLinks = resources.filter(
     (r) => r && r?.resource_type === "external_link"
   );
@@ -70,6 +81,7 @@ export async function getStaticProps(context) {
     revalidate: 1, //TODO: Increase this timer
   });
 }
+
 
 export async function getStaticPaths(context) {
   let datasets = await listDatasets();

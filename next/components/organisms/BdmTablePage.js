@@ -15,10 +15,17 @@ import {
 import { BaseResourcePage } from "../molecules/BaseResourcePage";
 import { SchemaForm } from "../molecules/SchemaForm";
 import { getBdmTableSchema } from "../../pages/api/schemas";
+<<<<<<< HEAD
 import { deleteResource, updateResource } from "../../pages/api/datasets";
 import { BlueBox } from "../molecules/BlueBox";
 import RoundedButton from "../atoms/RoundedButton";
 import Link from "../atoms/Link";
+||||||| constructed merge base
+import { deleteResource, updateResource } from "../../pages/api/datasets";
+=======
+import { deleteResource, updateResource, getOneClickDownloadUrl } from "../../pages/api/datasets";
+import filesize from "filesize";
+>>>>>>> filter one click download when size is too big
 
 export function BdmTablePage({
   translations,
@@ -27,7 +34,14 @@ export function BdmTablePage({
   availableOptionsTranslations,
 }) {
   const [selectedConsultation, setSelectedConsultation] = useState("SQL");
+<<<<<<< HEAD
   const consultationOptions = ["SQL", "Python", "R", "Download"];
+||||||| constructed merge base
+  const consultationOptions = ["SQL", "Python", "R"];
+=======
+  const consultationOptions = ["SQL", "Python", "R"];
+  const MAX_ONE_CLICK_DOWNLOAD_SIZE = 80_000_000; // 80 MB limit to avoid high costs. Eventually we want to migrate this to a no-egress cost solution
+>>>>>>> filter one click download when size is too big
   const queryName = `${resource.dataset_id}.${resource.name}`;
 
   if (
@@ -257,6 +271,56 @@ df <- read_sql(query)`,
               </Button>
             );
           })}
+<<<<<<< HEAD
+||||||| constructed merge base
+
+          <Link
+            href={`https://storage.googleapis.com/basedosdados-public/one-click-download/${resource.dataset_id}/${resource.name}.zip`}
+          >
+            <Button
+              borderWidth={"1px"}
+              borderColor={"#DEDFE0"}
+              fontSize="14px"
+              fontFamily="Lato"
+              color={"black"}
+              height="35px"
+              letterSpacing="0.1em"
+              borderRadius="8px"
+              width={{ base: "100%", lg: "initial" }}
+              minWidth="110px"
+              backgroundColor="transparent"
+              fontWeight={"regular"}
+            >
+              Download
+            </Button>
+          </Link>
+=======
+
+          { resource.oneClickDownloadSize != null && resource.oneClickDownloadSize < MAX_ONE_CLICK_DOWNLOAD_SIZE ?
+            <Link
+              href={getOneClickDownloadUrl(resource)}
+            >
+              <Button
+                borderWidth={"1px"}
+                borderColor={"#DEDFE0"}
+                fontSize="14px"
+                fontFamily="Lato"
+                color={"black"}
+                height="35px"
+                letterSpacing="0.1em"
+                borderRadius="8px"
+                width={{ base: "100%", lg: "initial" }}
+                minWidth="110px"
+                backgroundColor="transparent"
+                fontWeight={"regular"}
+              >
+                Download ({filesize(resource.oneClickDownloadSize)})
+              </Button>
+            </Link>
+            :
+            <></>
+          }
+>>>>>>> filter one click download when size is too big
         </Stack>
         {helpText[selectedConsultation] ? (
           <SectionText width="100%" fontSize="14px" fontWeight="300">

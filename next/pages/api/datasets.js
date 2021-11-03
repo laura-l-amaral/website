@@ -1,6 +1,44 @@
 import axios from "axios";
 import { axiosInstance } from "../../axios";
 
+<<<<<<< HEAD
+||||||| constructed merge base
+export function getRecentDatasets() {
+  return axios
+    .get("http://ckan:5000/api/3/action/bd_recent_datasets_list?limit=10")
+    .then(({ data }) => data.result);
+}
+
+export function getPopularDatasets() {
+  return axios
+    .get("http://ckan:5000/api/3/action/bd_popular_datasets_list?limit=10")
+    .then(({ data }) => data.result);
+}
+
+=======
+export function getRecentDatasets() {
+  return axios
+    .get("http://ckan:5000/api/3/action/bd_recent_datasets_list?limit=10")
+    .then(({ data }) => data.result);
+}
+
+export function getPopularDatasets() {
+  return axios
+    .get("http://ckan:5000/api/3/action/bd_popular_datasets_list?limit=10")
+    .then(({ data }) => data.result);
+}
+
+export async function getOneClickDownloadSize(resource) {
+  const url = getOneClickDownloadUrl(resource)
+  const result = await axios.head(url, { validateStatus: false })
+  if (result.status === 404) return null;
+  return result.headers['content-length']
+}
+
+export function getOneClickDownloadUrl(resource) {
+    return `https://storage.googleapis.com/basedosdados-public/one-click-download/${resource.dataset_id}/${resource.name}.zip`
+}
+>>>>>>> filter one click download when size is too big
 export function listDatasets() {
   return axios
     .get(`http://ckan:5000/api/3/action/package_list`)
