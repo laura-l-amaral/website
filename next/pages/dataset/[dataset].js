@@ -37,6 +37,7 @@ import { ExternalLinkPage } from "../../components/organisms/ExternalLinkPage";
 import { BdmTablePage } from "../../components/organisms/BdmTablePage";
 import { InformationRequestPage } from "../../components/organisms/InformationRequestPage";
 import { MetadataPage } from "../../components/organisms/MetadataPage";
+import { TreatmentCodePage } from "../../components/organisms/TreatmentCodePage";
 import { DashboardsPage } from "../../components/organisms/DashboardsPage";
 import UserContext from "../../context/user";
 import { SchemaForm } from "../../components/molecules/SchemaForm";
@@ -591,6 +592,7 @@ export default function DatasetPage({
               Metadados
             </GreenTab>
             {dataset.id === "br-ibge-ipca" && <GreenTab>Painéis</GreenTab>}
+            <GreenTab>Código de tratamento</GreenTab>
           </TabList>
           <TabPanels>
             <TabPanel padding="0px">
@@ -620,6 +622,11 @@ export default function DatasetPage({
                 />
               </TabPanel>
             }
+            <TabPanel padding="0px">
+              <TreatmentCodePage
+                dataset={dataset}
+              />
+            </TabPanel>
           </TabPanels>
         </Tabs>
       </VStack>

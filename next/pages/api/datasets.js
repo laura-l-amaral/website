@@ -63,6 +63,14 @@ export function getRecentDatalakeDatasetsByTheme(id) {
     .then(({ data }) => data.result.datasets);
 }
 
+export function getREADMEgithub(id) {
+  return axios
+    .get(
+      `https://raw.githubusercontent.com/basedosdados/mais/master/bases/${id}/README.md`
+    )
+    .then(({ data }) => data)
+}
+
 export function updateDataset(dataset) {
   return axiosInstance.post(`/package_update`, dataset);
 }
