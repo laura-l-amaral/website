@@ -16,7 +16,6 @@ import {
   AspectRatio
 } from "@chakra-ui/react";
 
-
 export function DashboardsPage({
   dataset,
   availableOptionsTranslations,
@@ -37,8 +36,8 @@ export function DashboardsPage({
   //     <></>
   //   );
   // }, []);
-
-  if (!dataset?.dataset_id === "br-ibge-ipca") // TODO: remove this hardcoded value
+  if (dataset?.name !== "br-ibge-ipca") return null// TODO: remove this hardcoded value
+    
     return (
       <BaseResourcePage title="">
         <AspectRatio

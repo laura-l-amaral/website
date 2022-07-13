@@ -50,6 +50,8 @@ import { BaseResourcePage } from "../../components/molecules/BaseResourcePage";
 import GreenTab from "../../components/atoms/GreenTab";
 import DataBaseIcon from "../../public/img/icons/databaseIcon";
 import DocIcon from "../../public/img/icons/docIcon";
+import CodeIcon from "../../public/img/icons/codeIcon";
+import PanelsIcon from "../../public/img/icons/panelsIcon";
 
 export async function getStaticProps(context) {
   const dataset = await showDataset(context.params.dataset);
@@ -591,8 +593,25 @@ export default function DatasetPage({
               />
               Metadados
             </GreenTab>
-            {dataset.id === "br-ibge-ipca" && <GreenTab>Painéis</GreenTab>}
-            <GreenTab>Código de tratamento</GreenTab>
+            <GreenTab>
+              <CodeIcon
+                widthIcon="24px"
+                heightIcon="24px"
+                marginRight="6px"
+                fill={tabIndex === 2 ? "#2B8C4D" :"#C4C4C4"}
+              />
+              Código de tratamento
+            </GreenTab>
+            {dataset.name === "br-ibge-ipca" && 
+              <GreenTab>
+                <PanelsIcon
+                  widthIcon="24px"
+                  heightIcon="24px"
+                  marginRight="6px"
+                  fill={tabIndex === 3 ? "#2B8C4D" :"#C4C4C4"}
+                />
+                Painéis
+              </GreenTab>}
           </TabList>
           <TabPanels>
             <TabPanel padding="0px">
@@ -607,6 +626,7 @@ export default function DatasetPage({
                 isMobileMod={isMobileMod}
               />
             </TabPanel>
+
             <TabPanel padding="0px" pt="20px">
               <MetadataPage
                 dataset={dataset}
@@ -614,7 +634,14 @@ export default function DatasetPage({
                 availableOptionsTranslations={availableOptionsTranslations}
               />
             </TabPanel>
-            {dataset.id === "br-ibge-ipca" &&
+
+            <TabPanel padding="0px">
+              <TreatmentCodePage
+                dataset={dataset}
+              />
+            </TabPanel>
+
+            {dataset.name === "br-ibge-ipca" &&
               <TabPanel padding="0px">
                 <DashboardsPage
                   dataset={dataset}
@@ -622,11 +649,6 @@ export default function DatasetPage({
                 />
               </TabPanel>
             }
-            <TabPanel padding="0px">
-              <TreatmentCodePage
-                dataset={dataset}
-              />
-            </TabPanel>
           </TabPanels>
         </Tabs>
       </VStack>
