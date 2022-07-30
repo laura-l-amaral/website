@@ -64,11 +64,13 @@ export function getRecentDatalakeDatasetsByTheme(id) {
 }
 
 export function getREADMEgithub(id) {
+  const datasetId = id.replace(/-/g, "_")
+
   return axios
     .get(
-      `https://raw.githubusercontent.com/basedosdados/mais/master/bases/${id}/README.md`
+      `https://api.github.com/repos/basedosdados/mais/contents/bases/${datasetId}/README.md`,
     )
-    .then(({ data }) => data)
+    .then(({ data }) => data.content)
 }
 
 export function updateDataset(dataset) {

@@ -18,6 +18,7 @@ import {
   listDatasets,
   showDataset,
   updateResource,
+  getREADMEgithub
 } from "../api/datasets";
 import BigTitle from "../../components/atoms/BigTitle";
 import Subtitle from "../../components/atoms/Subtitle";
@@ -55,6 +56,7 @@ import PanelsIcon from "../../public/img/icons/panelsIcon";
 
 export async function getStaticProps(context) {
   const dataset = await showDataset(context.params.dataset);
+  const treatmentCode = await getREADMEgithub(dataset?.name)
   const translations = await getTranslations();
   const availableOptionsTranslations = await getAvailableOptionsTranslations();
   const translationsOptions = await getTranslationsOptions();
@@ -79,6 +81,7 @@ export async function getStaticProps(context) {
       availableOptionsTranslations,
       translationsOptions,
       isPlus: isBdPlus(dataset),
+      treatmentCode,
     },
     revalidate: 1, //TODO: Increase this timer
   });
@@ -433,6 +436,7 @@ export default function DatasetPage({
   translations,
   availableOptionsTranslations,
   translationsOptions,
+  treatmentCode,
 }) {
   const [tabIndex, setTabIndex] = useState(0)
   const [isMobileMod, setIsMobileMod] = useState(false)
@@ -638,6 +642,7 @@ export default function DatasetPage({
             <TabPanel padding="0px">
               <TreatmentCodePage
                 dataset={dataset}
+                treatmentCode={treatmentCode}
               />
             </TabPanel>
 

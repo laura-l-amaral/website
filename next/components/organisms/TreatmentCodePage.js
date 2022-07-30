@@ -3,20 +3,20 @@ import {
   Box,
   Text
 } from "@chakra-ui/react";
+import ReactMarkdown from "react-markdown";
 import React, { useEffect, useState } from "react";
 import { getREADMEgithub } from "../../pages/api/datasets";
+import style from "../../styles/markdown.module.css";
 
-export function TreatmentCodePage ({ dataset }) {
-  const [README, setREADME] = useState([""])
-  const datasetUrl = dataset.name.replace(/-/g, "_")
- 
-  useEffect(() => {
-    getREADMEgithub(datasetUrl)
-      .then(res => {
-        setREADME(res.split(`\n`))
-      })
-      .catch(setREADME(["Nenhum código de tratamento listado"]))
-  },[dataset])
+
+export function TreatmentCodePage ({ dataset, treatmentCode }) {
+  function b64DecodeUnicode(str) {
+    return decodeURIComponent(atob(str).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+  }
+
+  console.log(b64DecodeUnicode(treatmentCode))
 
   return (
     <VStack
@@ -30,11 +30,7 @@ export function TreatmentCodePage ({ dataset }) {
         borderRadius="16px"
         backgroundColor="#252A32"
       >
-        {README.map(elm => (
-          <Text fontFamily="ubuntu" fontSize="18px" color="#FFF" marginBottom="10px">
-            {elm}
-          </Text>
-        ))}
+        <ReactMarkdown className={style.reactMarkdow} children={b64DecodeUnicode(treatmentCode)}/>
       </Box>
     </VStack>
   )
