@@ -5,7 +5,6 @@ import {
 } from "@chakra-ui/react";
 import ReactMarkdown from "react-markdown";
 import React, { useEffect, useState } from "react";
-import { getREADMEgithub } from "../../pages/api/datasets";
 import style from "../../styles/markdown.module.css";
 
 
@@ -15,8 +14,6 @@ export function TreatmentCodePage ({ dataset, treatmentCode }) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
   }
-
-  console.log(b64DecodeUnicode(treatmentCode))
 
   return (
     <VStack

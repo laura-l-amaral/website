@@ -5,3 +5,7 @@
 .reactMarkdow a {
   color: rgb(95, 148, 240);
 }
+
+.reactMarkdow ol {
+  margin-left: 30px;
+}
