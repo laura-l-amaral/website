@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router";
-import FormTable from "../molecules/FormTable";
+import FormTable from "./FormTable";
 import LoadingSpin from "../atoms/Loading";
 
 import {
@@ -101,29 +101,86 @@ export default function PostTableForm({
   if(isLoading) return <LoadingSpin/>
 
   return (
-    <Stack>
-      <Accordion
-        defaultIndex={accordionItens}
-        width="100%"
-        transform={"translateX(20px)"}
-        allowToggle
-      >
-        <AccordionItem border={0}>
+    <Accordion
+      defaultIndex={accordionItens}
+      allowToggle
+    >
+      <AccordionItem border={0}>
+        <AccordionButton
+          fontSize="16px"
+          color="#252A32"
+          padding="8px 0 8px 16px"
+          _hover={{
+            backgroundColor:"transparent",
+            color:"#42B0FF",
+            opacity: "0.8"
+          }}
+          onClick={() => {
+            router.push({
+              pathname: router.pathname,
+              query: { dataset: query.dataset}
+            })
+            handleAccordionOpen(0)
+          }}
+        >
+          <Box
+            flex={1}
+            textAlign="left"
+            fontFamily="ubuntu"
+            fontWeight="400"
+            color={accordionItens === 0 && "#42B0FF"}
+          >
+            Criar Table
+          </Box>
+          <Text
+            position="relative"
+            left="-4px"
+            fontSize="20px"
+            fontWeight="500"
+            transition="all 0.2s"
+            transform={accordionItens === 0 && "rotate(45deg)"}
+          >+</Text>
+        </AccordionButton>
+        <AccordionPanel>
+          {accordionItens === 0 &&
+            <FormTable
+              id="create"
+              status={status}
+              organizations={organizations}
+              users={allUser}
+              licenses={allLicenses}
+              pipeline={allPipeline}
+            />
+          }
+        </AccordionPanel>
+      </AccordionItem>
+
+      {tables && tables.map((table, i) => 
+        <AccordionItem key={i} border={0}>
           <AccordionButton
-            width="632px"
             fontSize="16px"
             color="#252A32"
+            padding="8px 0 8px 16px"
             _hover={{
               backgroundColor:"transparent",
               color:"#42B0FF",
               opacity: "0.8"
             }}
             onClick={() => {
+              handleAccordionOpen(i+1)
+              if(query.table === table.node._id) return (
+                router.push({
+                  pathname: router.pathname,
+                  query: { dataset: query.dataset}
+                })
+              )
               router.push({
                 pathname: router.pathname,
-                query: { dataset: query.dataset}
+                query: {
+                  ...query,
+                  table: table.node._id
+                }
               })
-              handleAccordionOpen(0)
             }}
           >
             <Box
@@ -131,23 +188,16 @@ export default function PostTableForm({
               textAlign="left"
               fontFamily="ubuntu"
               fontWeight="400"
-              color={accordionItens === 0 && "#42B0FF"}
+              color={accordionItens === i+1 && "#42B0FF"}
             >
-              Criar Table
+              {table.node.name}
             </Box>
-            <Text
-              position="relative"
-              left="-4px"
-              fontSize="20px"
-              fontWeight="500"
-              transition="all 0.2s"
-              transform={accordionItens === 0 && "rotate(45deg)"}
-            >+</Text>
+            <AccordionIcon/>
           </AccordionButton>
           <AccordionPanel>
-            {accordionItens === 0 &&
+            {accordionItens === i+1 &&
               <FormTable
-                id="create"
+                id={table.node._id}
                 status={status}
                 organizations={organizations}
                 users={allUser}
@@ -157,62 +207,8 @@ export default function PostTableForm({
             }
           </AccordionPanel>
         </AccordionItem>
-
-        {tables && tables.map((table, i) => 
-          <AccordionItem key={i} border={0}>
-            <AccordionButton
-              width="632px"
-              fontSize="16px"
-              color="#252A32"
-              _hover={{
-                backgroundColor:"transparent",
-                color:"#42B0FF",
-                opacity: "0.8"
-              }}
-              onClick={() => {
-                handleAccordionOpen(i+1)
-                if(query.table === table.node._id) return (
-                  router.push({
-                    pathname: router.pathname,
-                    query: { dataset: query.dataset}
-                  })
-                )
-                router.push({
-                  pathname: router.pathname,
-                  query: {
-                    ...query,
-                    table: table.node._id
-                  }
-                })
-              }}
-            >
-              <Box
-                flex={1}
-                textAlign="left"
-                fontFamily="ubuntu"
-                fontWeight="400"
-                color={accordionItens === i+1 && "#42B0FF"}
-              >
-                {table.node.name}
-              </Box>
-              <AccordionIcon/>
-            </AccordionButton>
-            <AccordionPanel>
-              {accordionItens === i+1 &&
-                <FormTable
-                  id={table.node._id}
-                  status={status}
-                  organizations={organizations}
-                  users={allUser}
-                  licenses={allLicenses}
-                  pipeline={allPipeline}
-                />
-              }
-            </AccordionPanel>
-          </AccordionItem>
-          )
-        }
-      </Accordion>
-    </Stack>
+        )
+      }
+    </Accordion>
   )
 }

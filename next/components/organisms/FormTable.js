@@ -17,10 +17,11 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router";
+import FormTableAddon from "./FormTableAdd-on";
 import RoundedButton from "../atoms/RoundedButton";
 import SelectSearch from "../atoms/SelectSearch";
 import LoadingSpin from "../atoms/Loading";
@@ -117,7 +118,7 @@ export default function FormTable({
     if(formData.publishedBy) newFormData.publishedBy = newFormData.publishedBy.replace(new RegExp('\\bAccountNode:\\b', 'gi'), '')
     if(formData.dataCleanedBy) newFormData.dataCleanedBy = newFormData.dataCleanedBy.replace(new RegExp('\\bAccountNode:\\b', 'gi'), '')
 
-    if(query.table) {
+    if(query.table && query.table !== "create") {
       const result = await postTable(newFormData, query.dataset, query.table)
 
       if(result === undefined) return setIsSuccess({notSuccess: true})
@@ -157,7 +158,7 @@ export default function FormTable({
     <Stack
       display="flex"
       flexDirection="column"
-      width="600px"
+      width="100%"
       gap="20px"
       color="#252A32"
       fontFamily="Lato"
@@ -314,7 +315,6 @@ export default function FormTable({
         </FormControl>
       </Stack>
 
-
       <FormControl>
         <FormLabel>Source bucket name</FormLabel>
         <Input name="sourceBucketName" value={formData.sourceBucketName} onChange={handleChange} />
@@ -376,6 +376,8 @@ export default function FormTable({
           onChange={handleChange}
         />
       </FormControl>
+
+      <FormTableAddon />
 
       <Stack
         flexDirection="row"

@@ -157,6 +157,7 @@ export default function Control() {
             
             <AccordionItem
               border={0}
+              width="632px"
             >
               <AccordionButton
                 width="632px"
