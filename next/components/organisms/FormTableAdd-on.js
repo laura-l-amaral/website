@@ -39,6 +39,30 @@ export default function FormTableAddon() {
   }
   const [formCloudTables, setFormCloudTables] = useState(valueFormCloudTables())
 
+  const valueFormDateTimeRanges = (data) => {
+    return {
+      startYear: "",
+      startSemester: "",
+      startQuarter: "",
+      startMonth: "",
+      startDay: "",
+      startHour: "",
+      startMinute: "",
+      startSecond: "",
+      endYear: "",
+      endSemester: "",
+      endQuarter: "",
+      endMonth: "",
+      endDay: "",
+      endHour: "",
+      endMinute: "",
+      endSecond: "",
+      interval: "",
+      isClosed: false
+    }
+  }
+  const [formDateTimeRanges, setFormDateTimeRanges] = useState(valueFormDateTimeRanges())
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData((prevData) => ({
@@ -65,7 +89,7 @@ export default function FormTableAddon() {
           <AccordionIcon margin="0 0 0 auto"/>
         </AccordionButton>
 
-        <AccordionPanel>
+        <AccordionPanel display="flex" flexDirection="column" gap="20px">
           <FormControl isRequired isInvalid={!!errors.gcpProjectId}>
             <FormLabel>Gcp project id</FormLabel>
             <Input name="gcpProjectId" value={formCloudTables.gcpProjectId} onChange={handleChange} />
@@ -99,7 +123,7 @@ export default function FormTableAddon() {
           Coverages
           <AccordionIcon margin="0 0 0 auto"/>
         </AccordionButton>
-        <AccordionPanel>
+        <AccordionPanel display="flex" flexDirection="column" gap="20px">
 
         </AccordionPanel>
       </AccordionItem>
@@ -117,7 +141,84 @@ export default function FormTableAddon() {
           DateTime Ranges
           <AccordionIcon margin="0 0 0 auto"/>
         </AccordionButton>
-        <AccordionPanel>
+        <AccordionPanel display="flex" flexDirection="column" gap="20px">
+          <FormControl isRequired isInvalid={!!errors.startDate}>
+            <FormLabel>Start Date</FormLabel>
+            <Stack flexDirection="row" gap="8px" spacing={0} marginBottom="8px">
+              <Input
+                name="startDate"
+                placeholder="YYYY/MM/DD"
+                value={formDateTimeRanges.startDate}
+                onChange={handleChange}
+              />
+              <Input
+                name="startDate"
+                placeholder="HH:MM.SS"
+                value={formDateTimeRanges.startDate}
+                onChange={handleChange}
+              />
+            </Stack>
+
+            <Stack flexDirection="row" gap="8px" spacing={0}>
+              <Input
+                name="startSemester"
+                placeholder="Semester"
+                value={formDateTimeRanges.startSemester}
+                onChange={handleChange}
+              />
+              <Input
+                name="startQuarter"
+                placeholder="Quarter"
+                value={formDateTimeRanges.startQuarter}
+                onChange={handleChange}
+              />
+            </Stack>
+            <FormErrorMessage>{errors.startDate}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={!!errors.interval}>
+            <FormLabel>Interval</FormLabel>
+            <Input
+              name="interval"
+              value={formDateTimeRanges.interval}
+              onChange={handleChange}
+            />
+            <FormErrorMessage>{errors.interval}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={!!errors.startDate}>
+            <FormLabel>End Date</FormLabel>
+            <Stack flexDirection="row" gap="8px" spacing={0} marginBottom="8px">
+              <Input
+                name="endDate"
+                placeholder="YYYY/MM/DD"
+                value={formDateTimeRanges.endDate}
+                onChange={handleChange}
+              />
+              <Input
+                name="endDate"
+                placeholder="HH:MM.SS"
+                value={formDateTimeRanges.endDate}
+                onChange={handleChange}
+              />
+            </Stack>
+
+            <Stack flexDirection="row" gap="8px" spacing={0}>
+              <Input
+                name="endSemester"
+                placeholder="Semester"
+                value={formDateTimeRanges.endSemester}
+                onChange={handleChange}
+              />
+              <Input
+                name="endQuarter"
+                placeholder="Quarter"
+                value={formDateTimeRanges.endQuarter}
+                onChange={handleChange}
+              />
+            </Stack>
+            <FormErrorMessage>{errors.endDate}</FormErrorMessage>
+          </FormControl>
 
         </AccordionPanel>
       </AccordionItem>
@@ -135,7 +236,7 @@ export default function FormTableAddon() {
           Observation Level
           <AccordionIcon margin="0 0 0 auto"/>
         </AccordionButton>
-        <AccordionPanel>
+        <AccordionPanel display="flex" flexDirection="column" gap="20px">
 
         </AccordionPanel>
       </AccordionItem>
@@ -153,7 +254,7 @@ export default function FormTableAddon() {
           Updates
           <AccordionIcon margin="0 0 0 auto"/>
         </AccordionButton>
-        <AccordionPanel>
+        <AccordionPanel display="flex" flexDirection="column" gap="20px">
 
         </AccordionPanel>
       </AccordionItem>

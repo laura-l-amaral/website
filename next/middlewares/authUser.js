@@ -1,23 +1,24 @@
 import cookies from "js-cookie";
-import { validateToken } from "../pages/api/user";
+import { validateToken, refreshToken } from "../pages/api/user";
 
 async function isJWTInvalid(token) {
   if (!token) return true
 
   try {
     const decoded = await validateToken(token)
-    if (decoded?.payload?.email) {
-      return false
-    }
+    if (decoded?.payload?.email) return false
 
-    return true;
+    const refreshingToken = await refreshToken(token)
+    const revalidateToken = await validateToken(refreshingToken.refreshToken.token)
+    if (revalidateToken?.payload?.email) return false
+
+    return true
   } catch (error) {
     console.log(error)
 
     return true
   }
 }
-
 
 export default async function authUser(context, destiny) {
   const { req, res } = context
