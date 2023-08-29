@@ -12,6 +12,7 @@ export default function SelectSearch({
   onChange,
   keyId = "_id",
   displayName = "name",
+  joinDisplayName = "",
   options = [],
   hasNode = true
 }) {
@@ -49,7 +50,7 @@ export default function SelectSearch({
   }
 
   const searcher = new FuzzySearch(
-    options, hasNode ? [`node.${displayName}`] : [`${displayName}`], {sort: true}
+    options, hasNode ? [`node.${displayName}`, `node.${joinDisplayName}`] : [`${displayName}`, `${joinDisplayName}`], {sort: true}
   )
 
   useEffect(() => {
@@ -64,12 +65,12 @@ export default function SelectSearch({
       <Input
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        onMouseEnter={mouseEnterEvent}
-        onMouseLeave={mouseLeaveEvent}
+        onFocus={mouseEnterEvent}
+        onBlur={mouseLeaveEvent}
       />
       <Box
         position="absolute"
-        zIndex={10}
+        zIndex={100}
         backgroundColor="#FFF"
         top="75px"
         display={isOpen ? "block" : "none"}
@@ -79,8 +80,8 @@ export default function SelectSearch({
         overflow="auto"
         border="2px solid #FAFAFA"
         padding="8px 16px"
-        onMouseEnter={listMouseEnterEvent}
-        onMouseLeave={listMouseLeaveEvent}
+        onFocus={listMouseEnterEvent}
+        onBlur={listMouseLeaveEvent}
       >
         <Text
           onClick={() => {
@@ -102,7 +103,7 @@ export default function SelectSearch({
               }}
               value={hasNode ? elm.node[`${keyId}`] : elm[`${keyId}`]}
             >
-              {hasNode ? elm.node[`${displayName}`] : elm[`${displayName}`]}
+              {hasNode ? elm.node[`${displayName}`] : elm[`${displayName}`]} {joinDisplayName && `( ${hasNode ? elm.node[`${joinDisplayName}`] : elm[`${joinDisplayName}`]} )`}
             </Text>
           )
         })}

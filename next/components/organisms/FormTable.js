@@ -30,7 +30,7 @@ import {
   postTable,
   getTableEdit,
   deleteTable
-} from "../../pages/api/tables"
+} from "../../pages/api/tables";
 
 export default function FormTable({
   id,
