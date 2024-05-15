@@ -2323,8 +2323,8 @@ export default function UserPage({ getUser }) {
     {bar: "Conta", title: "Conta", value: "account", index: 1},
     {bar: "Senha", title: "Alterar senha", value: "new_password", index: 2},
     {bar: "Planos e pagamento", title: "Planos e pagamento", value: "plans_and_payment", index: 3},
+    {bar: "Acessos", title: "Gerenciar acessos", value: "accesses", index: 4},
   ]
-  // {bar: "Acessos", title: "Gerenciar acessos", value: "accesses", index: 4},
 
   useEffect(() => {
     const key = Object.keys(query)
@@ -2402,7 +2402,7 @@ export default function UserPage({ getUser }) {
             {sectionSelected === 1 && <Account userInfo={userInfo}/>}
             {sectionSelected === 2 && <NewPassword userInfo={userInfo}/>}
             {sectionSelected === 3 && <PlansAndPayment userData={userInfo}/>}
-            {/* {sectionSelected === 4 && <Accesses userInfo={userInfo}/>} */}
+            {sectionSelected === 4 && <Accesses userInfo={userInfo}/>}
           </Stack>
         </Stack>
       </Stack>
