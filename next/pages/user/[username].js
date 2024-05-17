@@ -66,6 +66,7 @@ import CrossIcon from "../../public/img/icons/crossIcon";
 import InfoIcon from "../../public/img/icons/infoIcon";
 import SucessIcon from "../../public/img/icons/sucessIcon";
 import ErrIcon from "../../public/img/icons/errIcon";
+import TrashIcon from "../../public/img/icons/trashIcon";
 import stylesPS from "../../styles/paymentSystem.module.css";
 
 export async function getServerSideProps(context) {
@@ -2174,10 +2175,17 @@ const PlansAndPayment = ({ userData }) => {
 }
 
 const Accesses = ({ userInfo }) => {
+  const [isBDEmpresas, setIsBDEmpresas] = useState(false)
+
+  useEffect(() => {
+    if(userInfo.proSubscription === "bd_pro_empresas") setIsBDEmpresas(true)
+  },[userInfo.proSubscription])
+
   return (
     <Stack spacing="24px">
       <Stack alignItems="end">
         <Tooltip
+          isDisabled={isBDEmpresas}
           hasArrow
           top="-10px"
           placement="top"
@@ -2196,15 +2204,15 @@ const Accesses = ({ userInfo }) => {
             <RoundedButton
               borderRadius="30px"
               width={isMobileMod() ? "100%" : "fit-content"}
-              _hover={{transform: "none"}}
-              cursor="default"
-              backgroundColor="#C4C4C4"
+              _hover={isBDEmpresas ? { opacity: 0.8, transform: "none"} : {transform: "none"}}
+              cursor={isBDEmpresas ? "pointer" :"default"}
+              backgroundColor={isBDEmpresas ? "#42B0FF" : "#C4C4C4"}
             >Adicionar usuário</RoundedButton>
           </Box>
         </Tooltip>
       </Stack>
 
-      <Grid templateColumns={isMobileMod() ? "1fr 1fr" : "3fr 1fr"}>
+      <Grid templateColumns={isMobileMod() ? "8fr 3fr 48px" : "8fr 4fr 56px"}>
         <GridItem>
           <Text
             backgroundColor="#F6F6F6"
@@ -2217,6 +2225,7 @@ const Accesses = ({ userInfo }) => {
             letterSpacing="0.2px"
           >Usuário</Text>
         </GridItem>
+
         <GridItem>
           <Text
             backgroundColor="#F6F6F6"
@@ -2230,6 +2239,11 @@ const Accesses = ({ userInfo }) => {
             width="100%"
           >Acesso</Text>
         </GridItem>
+
+        <GridItem
+          backgroundColor="#F6F6F6"
+          width="100%"
+        />
 
         <GridItem
           overflow="hidden"
@@ -2301,6 +2315,39 @@ const Accesses = ({ userInfo }) => {
           >
             Administrador
           </Text>
+        </GridItem>
+
+        <GridItem
+          display="flex"
+          justifyContent="start"
+          alignItems="center"
+          width="100%"
+          borderBottom="1px solid #DEDFE0"
+        >
+          <Tooltip
+            isDisabled={!isBDEmpresas}
+            hasArrow
+            top="-2px"
+            placement="top"
+            bg="#2A2F38"
+            label="Remover"
+            fontSize="14px"
+            fontWeight="400"
+            fontFamily="Lato"
+            padding="5px 16px 6px"
+            letterSpacing="0.5px"
+            lineHeight="24px"
+            color="#FFF"
+            borderRadius="6px"
+          >
+            <TrashIcon
+              width="32px"
+              height="32px"
+              _hover={isBDEmpresas && { opacity: 0.8 }}
+              cursor={isBDEmpresas ? "pointer" :"default"}
+              fill={isBDEmpresas ? "#FF8484" : "#ACAEB1"}
+            />
+          </Tooltip>
         </GridItem>
       </Grid>
     </Stack>
