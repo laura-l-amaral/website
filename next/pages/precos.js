@@ -39,8 +39,8 @@ export async function getServerSideProps(context) {
   return {
     props: {
       username: user.username,
-      isBDPro: user?.proSubscription === "bd_pro",
-      isBDEmp: user?.proSubscription === "bd_pro_empresas"
+      isBDPro: user?.proSubscription === "bd_pro" && user?.proSubscriptionStatus === "active",
+      isBDEmp: user?.proSubscription === "bd_pro_empresas" && user?.proSubscriptionStatus === "active"
     }
   }
 }

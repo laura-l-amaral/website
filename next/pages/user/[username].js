@@ -1891,13 +1891,13 @@ const PlansAndPayment = ({ userData }) => {
               {name: "Dezenas de bases de alta frequência atualizadas"},
             ]}
             button={{
-              text: `${userData?.proSubscription === "bd_pro" ? "Plano atual" : "Assinar"}`,
-              onClick: userData?.proSubscription === "bd_pro" ? () => {} : () => {
+              text: `${userData?.proSubscription === "bd_pro" && userData?.proSubscriptionStatus === "active"  ? "Plano atual" : "Assinar"}`,
+              onClick: userData?.proSubscription === "bd_pro" && userData?.proSubscriptionStatus === "active" ? () => {} : () => {
                 setPlan({title: "BD Pro", slug:"bd_pro", slots: "0"})
                 PlansModal.onClose()
                 PaymentModal.onOpen()
               },
-              isCurrentPlan: userData?.proSubscription === "bd_pro" ? true : false,
+              isCurrentPlan: userData?.proSubscription === "bd_pro" && userData?.proSubscriptionStatus === "active"? true : false,
             }}
           />
 
@@ -1912,13 +1912,13 @@ const PlansAndPayment = ({ userData }) => {
               {name: "Acesso para 10 contas"},{name: "Suporte prioritário via email e Discord"}
             ]}
             button={{
-              text: `${userData?.proSubscription === "bd_pro_empresas" ? "Plano atual" : "Assinar"}`,
-              onClick: userData?.proSubscription === "bd_pro_empresas" ? () => {} : () => {
+              text: `${userData?.proSubscription === "bd_pro_empresas" && userData?.proSubscriptionStatus === "active" ? "Plano atual" : "Assinar"}`,
+              onClick: userData?.proSubscription === "bd_pro_empresas" && userData?.proSubscriptionStatus === "active" ? () => {} : () => {
                 setPlan({title: "BD Empresas", slug:"bd_pro_empresas", slots: "10"})
                 PlansModal.onClose()
                 PaymentModal.onOpen()
               },
-              isCurrentPlan: userData?.proSubscription === "bd_pro_empresas" ? true : false,
+              isCurrentPlan: userData?.proSubscription === "bd_pro_empresas" && userData?.proSubscriptionStatus === "active" ? true : false,
             }}
           />
         </Stack>
@@ -2094,12 +2094,12 @@ const PlansAndPayment = ({ userData }) => {
             {defaultResource.resources.map((elm, index) => {
               return <IncludesFeature elm={elm} index={index} key={index}/>
             })}
-            {userData?.proSubscription === "bd_pro" && 
+            {userData?.proSubscription === "bd_pro" && userData?.proSubscriptionStatus === "active" && 
               planResource.resources.map((elm, index) => {
                 return <IncludesFeature elm={elm} index={index} key={index}/>
               })
             }
-            {userData?.proSubscription === "bd_pro_empresas" &&
+            {userData?.proSubscription === "bd_pro_empresas" && userData?.proSubscriptionStatus === "active" &&
               <>
                 {resources["bd_pro"].resources.map((elm, index) => {
                   return <IncludesFeature elm={elm} index={index} key={index}/>
@@ -2148,7 +2148,7 @@ const PlansAndPayment = ({ userData }) => {
                 </>
               }
 
-              {userData?.proSubscription === "bd_pro" &&
+              {userData?.proSubscription === "bd_pro" && userData?.proSubscriptionStatus === "active" &&
                 resources["bd_pro_empresas"].resources.map((elm, index) => {
                   return <NotIncludesFeature  elm={elm} index={index} key={index}/>
                 })
@@ -2178,7 +2178,7 @@ const Accesses = ({ userInfo }) => {
   const [isBDEmpresas, setIsBDEmpresas] = useState(false)
 
   useEffect(() => {
-    if(userInfo.proSubscription === "bd_pro_empresas") setIsBDEmpresas(true)
+    if(userInfo.proSubscription === "bd_pro_empresas" && userData?.proSubscriptionStatus === "active") setIsBDEmpresas(true)
   },[userInfo.proSubscription])
 
   return (
